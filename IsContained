@@ -1,0 +1,85 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <ctime>
+
+bool IsContainedBF(const std::string& str1, const std::string& str2)
+{
+	for (std::string::const_iterator citer2 = str2.begin();
+		citer2 != str2.end(); ++citer2)
+	{
+		std::string::const_iterator citer1;
+		for (citer1 = str1.begin();	citer1 != str1.end(); ++citer1)
+		{
+			if (*citer2 == *citer1) break;
+		}
+		if (citer1 == str1.end()) return false;
+	}
+	return true;
+}
+
+std::string::difference_type Partition(std::string& str,
+	std::string::iterator begin, std::string::iterator end)
+{
+	srand((int)time(NULL));
+	std::string::size_type ran = rand() % (end - begin + 1);
+	char tCh = *(begin + ran);
+	*(begin + ran) = *(end);
+	*(end) = tCh;
+	std::string::iterator i = begin;
+	for (std::string::iterator j = begin; j != end; ++j)
+	{
+		if (*j <= *end)
+		{
+			tCh = *i;
+			*i = *j;
+			*j = tCh;
+			i++;
+		}
+	}
+	tCh = *i;
+	*i = *end;
+	*end = tCh;
+	return i - begin;
+}
+//Ascend
+void QuickSort(std::string& str, std::string::iterator begin,
+	std::string::iterator end)
+{
+	if (end > begin)
+	{
+		std::string::size_type pos = Partition(str, begin, end);
+		//check pos in case of iterators out of range
+		if (pos > 0 && pos < str.end() - str.begin() - 1)
+		{
+			QuickSort(str, begin, begin + pos - 1);
+			QuickSort(str, begin + pos + 1, end);
+		}
+	}
+}
+
+bool IsContained(std::string& str1, std::string& str2)
+{
+	QuickSort(str1, str1.begin(), str1.end() - 1);
+	QuickSort(str2, str2.begin(), str2.end() - 1);
+	std::string::const_iterator citer1 = str1.begin();
+	std::string::const_iterator citer2 = str2.begin();
+	while (citer1 != str1.end() && citer2 != str2.end())
+	{
+		while (citer1 != str1.end() && *citer1 < *citer2) citer1++;
+		if (citer1 == str1.end() || *citer1>*citer2) return false;
+		while (citer2 != str2.end() - 1 && *(citer2 + 1) == *citer2)
+			citer2++;
+		citer2++;
+	}
+	return true;
+}
+
+int main()
+{
+	std::string str1("abcddddefg"), str2("adgg"), str3("bj");
+	std::cout << IsContained(str1, str2) << std::endl;
+	std::cout << IsContained(str1, str3) << std::endl;
+	system("pause");
+	return 0;
+}

@@ -9,7 +9,7 @@ std::string::difference_type Partition(std::string& str,
 	std::string::iterator i = begin;
 	for (std::string::iterator j = begin; j != end; ++j)
 	{
-		if (*j < *end)
+		if (*j <= *end)
 		{
 			tCh = *i;
 			*i = *j;
@@ -29,7 +29,11 @@ void QuickSort(std::string& str, std::string::iterator begin,
 	if (end > begin)
 	{
 		std::string::size_type pos = Partition(str, begin, end);
-		QuickSort(str, begin, begin + pos - 1);
-		QuickSort(str, begin + pos + 1, end);
+		//check pos in case of iterators out of range
+		if (pos > 0 && pos < str.end() - str.begin() - 1)
+		{
+			QuickSort(str, begin, begin + pos - 1);
+			QuickSort(str, begin + pos + 1, end);
+		}
 	}
 }

@@ -1,0 +1,35 @@
+std::string::difference_type Partition(std::string& str,
+	std::string::iterator begin, std::string::iterator end)
+{
+	srand((int)time(NULL));
+	std::string::size_type ran = rand() % (end - begin + 1);
+	char tCh = *(begin + ran);
+	*(begin + ran) = *(end);
+	*(end) = tCh;
+	std::string::iterator i = begin;
+	for (std::string::iterator j = begin; j != end; ++j)
+	{
+		if (*j < *end)
+		{
+			tCh = *i;
+			*i = *j;
+			*j = tCh;
+			i++;
+		}
+	}
+	tCh = *i;
+	*i = *end;
+	*end = tCh;
+	return i - begin;
+}
+//Ascend
+void QuickSort(std::string& str, std::string::iterator begin,
+	std::string::iterator end)
+{
+	if (end > begin)
+	{
+		std::string::size_type pos = Partition(str, begin, end);
+		QuickSort(str, begin, begin + pos - 1);
+		QuickSort(str, begin + pos + 1, end);
+	}
+}

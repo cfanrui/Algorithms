@@ -1,0 +1,15 @@
+void Reverse(ListNode* H)
+{
+	ListNode* p = H, *q;
+	//NULL list
+	if (!p) return;
+	q = p->m_pNext;
+	p->m_pNext = NULL;
+	while (q)
+	{
+		p = q->m_pNext;
+		q->m_pNext = H;
+		H-> = q;
+		q = p;
+	}
+}

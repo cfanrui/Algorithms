@@ -1,0 +1,34 @@
+void Heapify(int *heap, size_t pos, size_t len)
+{
+	size_t l = 2 * pos, r = 2 * pos + 1, min;
+	if (l <= len && heap[pos] > heap[l])
+		min = l;
+	else min = pos;
+	if (r <= len && heap[min] > heap[r])
+		min = r;
+	if (pos != min)
+	{
+		swap(heap[pos], heap[min]);
+		Heapify(heap, min, len);
+	}
+}
+
+void CreateHeap(int *heap, size_t len)
+{
+	size_t pos = len / 2;
+	while (pos > 0)
+	{
+		Heapify(heap, pos, len);
+		pos--;
+	}
+}
+
+void HeapSort(int *heap, size_t len)
+{
+	CreateHeap(heap, len);
+	while (len > 1)
+	{
+		swap(heap[1], heap[len]);
+		Heapify(heap, 1, --len);
+	}
+}
